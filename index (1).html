@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piso WiFi Admin & Pause Time Login Guides</title>
+<meta name="description" content="Complete login and troubleshooting guides for Piso WiFi vendo machines: 10.0.0.1, 192.168.1.254, 10.5.50.1, 10.1.1.1 pause time and admin panels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0B1220;
+    --navy-800:#131C2E;
+    --navy-700:#1C2740;
+    --slate-600:#4B5768;
+    --slate-500:#6B7688;
+    --bg:#F7F8FA;
+    --panel:#FFFFFF;
+    --accent:#0EA5A0;
+    --accent-dark:#0B7E7A;
+    --amber:#E08A2C;
+    --border:#E3E7ED;
+    --radius:6px;
+    --sidebar-w:290px;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --head: 'Space Grotesk', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--slate-600);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent-dark);}
+  code, .ip{
+    font-family:var(--mono);
+    background:#EEF3F3;
+    color:var(--navy-800);
+    padding:2px 7px;
+    border-radius:4px;
+    font-size:0.92em;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  h1,h2,h3,h4{
+    font-family:var(--head);
+    color:var(--navy-900);
+    line-height:1.25;
+    font-weight:600;
+    margin-top:2.2em;
+    margin-bottom:0.55em;
+  }
+  h1{font-size:2.15rem;margin-top:0;}
+  h2{font-size:1.5rem;border-top:1px solid var(--border);padding-top:1.4em;}
+  h2:first-of-type{border-top:none;padding-top:0;}
+  h3{font-size:1.15rem;color:var(--navy-800);}
+  p{max-width:74ch;}
+  ul,ol{max-width:74ch;padding-left:1.3em;}
+  li{margin-bottom:0.4em;}
+
+  /* ================= APP SHELL ================= */
+  .app{
+    display:flex;
+    align-items:flex-start;
+    min-height:100vh;
+  }
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    width:var(--sidebar-w);
+    flex:0 0 var(--sidebar-w);
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0) 0 0/22px 22px,
+      linear-gradient(175deg, var(--navy-900) 0%, #0E1B33 58%, #0A2A2E 100%);
+    color:#AEB9CB;
+    border-right:1px solid rgba(255,255,255,0.06);
+    display:flex;
+    flex-direction:column;
+    scrollbar-width:thin;
+  }
+  .sidebar::-webkit-scrollbar{width:6px;}
+  .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:4px;}
+
+  .sidebar-brand{
+    padding:30px 26px 22px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .brand-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:9px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;align-items:center;justify-content:center;
+    gap:2px;
+    flex-shrink:0;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.12) inset, 0 6px 16px -6px rgba(14,165,160,0.6);
+  }
+  .brand-mark i{display:block;width:3px;background:#fff;border-radius:2px;opacity:0.95;}
+  .brand-mark i:nth-child(1){height:8px;}
+  .brand-mark i:nth-child(2){height:14px;}
+  .brand-mark i:nth-child(3){height:19px;}
+  .brand-text{font-family:var(--head);font-weight:600;color:#fff;font-size:1rem;line-height:1.25;}
+  .brand-text span{display:block;font-family:var(--mono);font-weight:500;color:var(--accent);font-size:0.68rem;letter-spacing:0.02em;margin-top:3px;}
+
+  .sidebar-title{
+    font-family:var(--head);
+    color:#fff;
+    font-size:1.22rem;
+    font-weight:600;
+    line-height:1.3;
+    margin:0 0 8px;
+  }
+  .sidebar-sub{
+    color:#8FA0B5;
+    font-size:0.85rem;
+    margin:0;
+    max-width:32ch;
+  }
+
+  nav.pages{
+    display:flex;
+    flex-direction:column;
+    padding:14px 12px 10px;
+    gap:2px;
+    flex:1 1 auto;
+  }
+  nav.pages .nav-label{
+    font-family:var(--mono);
+    font-size:0.66rem;
+    letter-spacing:0.04em;
+    color:#5E7286;
+    padding:14px 12px 8px;
+  }
+  nav.pages a{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px 12px;
+    border-radius:7px;
+    text-decoration:none;
+    color:#B7C1D2;
+    font-size:0.9rem;
+    font-weight:500;
+    border-left:3px solid transparent;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.pages a .num{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:#4E6377;
+    flex:0 0 20px;
+  }
+  nav.pages a .label-col{display:flex;flex-direction:column;gap:1px;}
+  nav.pages a .ip-tag{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    color:var(--accent);
+  }
+  nav.pages a:hover{background:rgba(255,255,255,0.06);color:#fff;}
+  nav.pages a.active{
+    background:rgba(14,165,160,0.14);
+    color:#fff;
+    border-left:3px solid var(--accent);
+    font-weight:600;
+  }
+  nav.pages a.active .num{color:var(--accent);}
+  nav.pages a.active .ip-tag{color:#7FE3DD;}
+
+  .sidebar-foot{
+    padding:16px 26px 22px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-size:0.74rem;
+    color:#5E7286;
+  }
+
+  /* ---------------- MOBILE TOPBAR ---------------- */
+  .mobile-topbar{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--navy-900);
+    color:#fff;
+    padding:14px 18px;
+    position:sticky;
+    top:0;
+    z-index:30;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .mobile-topbar .brand-row{margin:0;}
+  .mobile-topbar .brand-text{font-size:0.92rem;}
+  .menu-btn{
+    background:var(--accent);
+    border:none;
+    color:#04211F;
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:0.76rem;
+    padding:8px 14px;
+    border-radius:7px;
+    cursor:pointer;
+  }
+
+  /* ---------------- MAIN ---------------- */
+  main{
+    flex:1 1 auto;
+    min-width:0;
+    margin:0 auto;
+    padding:52px 48px 100px;
+    max-width:840px;
+  }
+
+  .kicker{
+    font-family:var(--mono);
+    font-size:0.82rem;
+    color:var(--accent-dark);
+    background:#E6F5F4;
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:5px;
+    margin-bottom:14px;
+  }
+
+  .lede{
+    font-size:1.12rem;
+    color:var(--navy-800);
+    max-width:70ch;
+  }
+
+  .callout{
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    background:#F2FAF9;
+    border-radius:6px;
+    padding:16px 18px;
+    margin:22px 0;
+    max-width:74ch;
+  }
+  .callout.warn{border-left-color:var(--amber);background:#FCF4E9;}
+  .callout p{margin:0;}
+  .callout strong{color:var(--navy-900);}
+
+  table{
+    border-collapse:collapse;
+    width:100%;
+    max-width:74ch;
+    margin:18px 0 28px;
+    font-size:0.93rem;
+  }
+  th,td{
+    border:1px solid var(--border);
+    padding:10px 12px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--navy-900);
+    color:#fff;
+    font-family:var(--head);
+    font-weight:500;
+    font-size:0.85rem;
+  }
+  tr:nth-child(even) td{background:#FBFCFD;}
+
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding-left:0;
+    max-width:74ch;
+  }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:14px 16px 14px 52px;
+    margin-bottom:10px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:14px;top:14px;
+    width:24px;height:24px;
+    border-radius:5px;
+    background:var(--navy-900);
+    color:#fff;
+    font-family:var(--mono);
+    font-size:0.8rem;
+    font-weight:600;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .steps li strong{display:block;color:var(--navy-900);margin-bottom:3px;font-family:var(--head);font-weight:600;}
+
+  details.faq{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:0;
+    margin-bottom:10px;
+    max-width:74ch;
+    background:var(--panel);
+  }
+  details.faq summary{
+    cursor:pointer;
+    padding:14px 16px;
+    font-weight:600;
+    color:var(--navy-900);
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::after{
+    content:'+';
+    font-family:var(--mono);
+    color:var(--accent-dark);
+    flex-shrink:0;
+  }
+  details.faq[open] summary::after{content:'\2013';}
+  details.faq .faq-body{padding:0 16px 16px;margin:0;color:var(--slate-600);}
+
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    max-width:74ch;
+    margin:20px 0;
+  }
+  .card{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:16px 18px;
+    background:var(--panel);
+  }
+  .card h4{margin-top:0;font-size:0.95rem;}
+
+  .page{display:none;}
+  .page.active{display:block;animation:fadein .25s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  footer.page-foot{
+    margin-top:50px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    font-size:0.85rem;
+    color:var(--slate-500);
+  }
+
+  .toc{
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px 18px;
+    max-width:74ch;
+    margin:20px 0 30px;
+    background:var(--panel);
+  }
+  .toc p{margin:0 0 8px;font-family:var(--head);font-weight:600;color:var(--navy-900);font-size:0.92rem;}
+  .toc ol{margin:0;padding-left:1.2em;font-size:0.92rem;}
+  .toc a{text-decoration:none;}
+
+  /* ---------------- MOBILE ---------------- */
+  @media (max-width: 880px){
+    .app{flex-direction:column;}
+    .sidebar{
+      position:relative;
+      width:100%;
+      height:auto;
+      max-height:0;
+      overflow:hidden;
+      border-right:none;
+      transition:max-height .25s ease;
+    }
+    .sidebar.open{max-height:1200px;overflow-y:auto;}
+    .mobile-topbar{display:flex;}
+    main{padding:32px 20px 70px;}
+    .grid-2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="mobile-topbar">
+    <div class="brand-row">
+      <div class="brand-mark"><i></i><i></i><i></i></div>
+      <div class="brand-text">Piso WiFi Help Desk<span>vendo admin &amp; pause-time guides</span></div>
+    </div>
+    <button class="menu-btn" id="menuToggle">MENU</button>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-row">
+        <div class="brand-mark"><i></i><i></i><i></i></div>
+        <div class="brand-text">Piso WiFi<span>Help Desk</span></div>
+      </div>
+      <h1 class="sidebar-title">Login &amp; pause-time guides for Piso WiFi vendo machines</h1>
+      <p class="sidebar-sub">Eight focused guides covering the private IP addresses vendo machines and small routers use most.</p>
+    </div>
+
+    <nav class="pages">
+      <span class="nav-label">GUIDES</span>
+      <a href="#pause-time" data-page="pause-time"><span class="num">01</span><span class="label-col"><span>Pause Time</span><span class="ip-tag">10.0.0.1</span></span></a>
+      <a href="#lpb-guide" data-page="lpb-guide"><span class="num">02</span><span class="label-col"><span>LPB Guide</span><span class="ip-tag">10.0.0.1</span></span></a>
+      <a href="#admin-254" data-page="admin-254"><span class="num">03</span><span class="label-col"><span>Admin Login</span><span class="ip-tag">192.168.1.254</span></span></a>
+      <a href="#pause-10-5-50-1" data-page="pause-10-5-50-1"><span class="num">04</span><span class="label-col"><span>Pause Login</span><span class="ip-tag">10.5.50.1</span></span></a>
+      <a href="#admin-1111" data-page="admin-1111"><span class="num">05</span><span class="label-col"><span>Admin Login</span><span class="ip-tag">10.1.1.1</span></span></a>
+      <a href="#admin-10001" data-page="admin-10001"><span class="num">06</span><span class="label-col"><span>Admin Login</span><span class="ip-tag">10.0.0.1</span></span></a>
+      <span class="nav-label">SITE</span>
+      <a href="#contact" data-page="contact"><span class="num">07</span><span class="label-col"><span>Contact Us</span></span></a>
+      <a href="#about" data-page="about"><span class="num">08</span><span class="label-col"><span>About</span></span></a>
+    </nav>
+
+    <div class="sidebar-foot">
+      Independent, ad-free reference.<br>Not affiliated with any router or vendo hardware brand.
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <!-- PAGE 1 -->
+    <article class="page" id="page-pause-time">
+      <span class="kicker">10.0.0.1</span>
+      <h1>(10.0.0.1) Piso WiFi Pause Time: How to Pause, Check &amp; Resume Your Session</h1>
+      <p class="lede">If you run or use a coin-operated Piso WiFi vendo machine, <a href="https://pisowifipausetime.ph/">Piso WiFi Pause Time</a> is the feature that lets you freeze your remaining internet minutes instead of losing them when you step away. This guide walks through what pause time is, how to open the pause time panel at <span class="ip">10.0.0.1</span>, and how to fix the most common problems people run into.</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#pt-what">What is Piso WiFi pause time?</a></li>
+          <li><a href="#pt-access">How to access 10.0.0.1/pause</a></li>
+          <li><a href="#pt-steps">Pausing your session step by step</a></li>
+          <li><a href="#pt-resume">Resuming a paused session</a></li>
+          <li><a href="#pt-check">Checking remaining time and data</a></li>
+          <li><a href="#pt-fix">Fixing common pause time problems</a></li>
+          <li><a href="#pt-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="pt-what">What is Piso WiFi pause time?</h2>
+      <p>Piso WiFi vendo machines are coin- or app-based internet vending units common in sari-sari stores, apartments, and small businesses across the Philippines. A user inserts coins (or pays through a linked e-wallet) and receives a block of internet minutes. Piso WiFi pause time is a built-in feature of the vendo software that lets a connected user temporarily suspend the countdown on their purchased time, so stepping away from the WiFi signal — going home for the night, leaving a store, or simply not using the internet for a while — doesn't burn through paid minutes.</p>
+      <p>Instead of the timer running continuously from the moment of payment, pause time creates a "banked" balance. The remaining minutes sit untouched until the same device reconnects and the user actively resumes the session. This is one of the most requested features among vendo machine owners because it directly affects customer satisfaction: nobody likes paying for wifi minutes they never actually used.</p>
+
+      <div class="callout">
+        <p><strong>Why 10.0.0.1?</strong> Most Piso WiFi vendo boxes run a small local web server on the private address <span class="ip">10.0.0.1</span>, which is only reachable while your phone or laptop is connected to that specific machine's WiFi network. It is not a public website — you cannot open it from mobile data or from a different WiFi network.</p>
+      </div>
+
+      <h2 id="pt-access">How to access 10.0.0.1/pause</h2>
+      <p>Before anything else, your device needs to actually be joined to the vendo machine's WiFi network. Piso WiFi networks are usually named something like "PISOWIFI", "PisoNet", or a custom name chosen by the machine owner, and typically don't require a WiFi password to join — payment happens after connecting, inside the browser portal.</p>
+      <ol class="steps">
+        <li><strong>Connect to the vendo WiFi</strong>Open your device's WiFi settings and join the vendo machine's network. You do not need internet access yet to do this.</li>
+        <li><strong>Open a browser</strong>Launch Chrome, Safari, or any browser and type <span class="ip">10.0.0.1</span> directly into the address bar — not a search engine box.</li>
+        <li><strong>Wait for the portal to load</strong>The vendo machine's captive portal should load automatically. If it doesn't, try adding <span class="ip">http://10.0.0.1/</span> with the http:// prefix explicitly.</li>
+        <li><strong>Locate the pause option</strong>Once you're logged into an active session, look for a "Pause" or "Pause Time" button on the portal's main screen, usually next to the countdown timer.</li>
+      </ol>
+
+      <h2 id="pt-steps">Pausing your session step by step</h2>
+      <p>Once you can see the vendo portal with your active countdown timer, pausing is usually a single tap, but the exact placement of the button varies slightly by the vendo software version installed on the machine (common builds include LPB, Pisowifi Pause Time Ultimate, and various customized forks).</p>
+      <ol class="steps">
+        <li><strong>Open the portal at 10.0.0.1</strong>Confirm you can see your remaining minutes on screen.</li>
+        <li><strong>Tap "Pause"</strong>This is typically a orange or red button beside the timer display, sometimes represented by a pause icon (⏸).</li>
+        <li><strong>Confirm the prompt</strong>Some builds show a confirmation dialog asking "Pause your session now?" — tap yes or confirm.</li>
+        <li><strong>Note your remaining balance</strong>The portal usually displays your frozen remaining time (e.g., "58 minutes left") so you can track it later.</li>
+        <li><strong>Disconnect if needed</strong>You can now safely leave WiFi range, turn off WiFi, or move to another network. Your paused balance stays reserved for your device.</li>
+      </ol>
+
+      <div class="callout warn">
+        <p><strong>Important:</strong> Pause time is almost always tied to your device's MAC address. If you reconnect using a different phone, or your device's MAC address changes (common on some Android phones with "private WiFi address" turned on), the machine may not recognize you as the same user, and your paused balance may not carry over.</p>
+      </div>
+
+      <h2 id="pt-resume">Resuming a paused session</h2>
+      <p>To pick up where you left off, reconnect to the exact same vendo WiFi network using the same device you paused from.</p>
+      <ol class="steps">
+        <li><strong>Reconnect to the network</strong>Join the same Piso WiFi network as before.</li>
+        <li><strong>Revisit 10.0.0.1</strong>Open your browser and go back to the portal address.</li>
+        <li><strong>Tap "Resume" or "Unpause"</strong>Your frozen countdown should reappear with the same remaining minutes you had when you paused.</li>
+        <li><strong>Verify the timer is running</strong>Watch the countdown for a few seconds to confirm it has resumed ticking down normally.</li>
+      </ol>
+      <p>If the resume button is missing or your balance shows zero, see the troubleshooting section below — this is almost always caused by a device or network change rather than the vendo machine actually deleting your minutes.</p>
+
+      <h2 id="pt-check">Checking remaining time and data</h2>
+      <p>Most Piso WiFi portals display two numbers while you're connected: remaining minutes (or hours) and, on some machines, a remaining data cap in MB or GB. To check without pausing, simply open <span class="ip">10.0.0.1</span> in a browser while connected — the balance is shown on the landing screen without needing to log in again, as long as your session is still active and your device hasn't been idle long enough to trigger an automatic timeout.</p>
+
+      <table>
+        <tr><th>Status shown</th><th>What it means</th></tr>
+        <tr><td>Timer counting down</td><td>Your session is active and minutes are being consumed normally.</td></tr>
+        <tr><td>Timer frozen, "Paused" label visible</td><td>Your pause request was successful; minutes are banked.</td></tr>
+        <tr><td>"Session expired" message</td><td>Your purchased time has fully run out; you'll need to insert coins again.</td></tr>
+        <tr><td>Blank or unreachable portal</td><td>You're likely not connected to the vendo network, or the machine is offline/rebooting.</td></tr>
+      </table>
+
+      <h2 id="pt-fix">Fixing common pause time problems</h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Pause button does nothing</h4>
+          <p>Refresh the page at 10.0.0.1, confirm you're still connected to the vendo WiFi (not a saved but out-of-range network), and try again. A weak signal can cause the pause request to silently fail.</p>
+        </div>
+        <div class="card">
+          <h4>Balance reset to zero after pausing</h4>
+          <p>This usually means the machine's software doesn't retain pause state across a full device reboot, or your device connected with a rotated MAC address. Try disabling "private/random WiFi address" for this network in your phone's settings.</p>
+        </div>
+        <div class="card">
+          <h4>Portal won't load at all</h4>
+          <p>Forget the network and rejoin it, restart WiFi on your device, and make sure you're typing the address into the URL bar and not a search box. Some browsers auto-redirect http to https and break the captive portal — try a different browser if this happens.</p>
+        </div>
+        <div class="card">
+          <h4>Resume button missing</h4>
+          <p>Some vendo builds hide the resume option after a set number of hours to prevent abuse. If a long time has passed since you paused, contact the machine owner — many can manually restore a balance from the admin panel.</p>
+        </div>
+      </div>
+
+      <h2 id="pt-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>Does pause time work if I switch phones?</summary><div class="faq-body"><p>Usually not. Pause time is linked to the MAC address of the device that paused the session, so switching devices typically starts a fresh, unpaused session instead of restoring the old balance.</p></div></details>
+      <details class="faq"><summary>How long can I leave a session paused?</summary><div class="faq-body"><p>This depends entirely on how the specific vendo machine is configured by its owner. Some allow indefinite pausing, others automatically clear paused balances after 24–72 hours of inactivity.</p></div></details>
+      <details class="faq"><summary>Will pausing protect my data allowance too, not just time?</summary><div class="faq-body"><p>On machines that enforce a data cap alongside a time limit, pausing generally freezes both, but this varies by the software build installed — some older versions only pause the timer.</p></div></details>
+      <details class="faq"><summary>Can the machine owner see that I paused?</summary><div class="faq-body"><p>Yes. Owners can typically see all active and paused sessions from the admin panel, including device identifiers and remaining balances.</p></div></details>
+
+      <footer class="page-foot">Related: see the <a href="#lpb-guide" onclick="goPage('lpb-guide');return false;">LPB Pause &amp; Admin Guide</a> for a build-specific walkthrough, or the <a href="#admin-10001" onclick="goPage('admin-10001');return false;">10.0.0.1 Admin Login</a> page if you're the machine owner.</footer>
+    </article>
+
+    <!-- PAGE 2 -->
+    <article class="page" id="page-lpb-guide">
+      <span class="kicker">10.0.0.1 &middot; LPB build</span>
+      <h1>LPB Piso WiFi 10.0.0.1 Pause Time Login, Admin &amp; Troubleshooting Guide</h1>
+      <p class="lede">"LPB" is one of the most widely deployed <a href="https://pisowifipausetime.ph/lpb-piso-wifi/">LPB Piso WiFi</a> vendo software packages in the Philippines, known for its clean pause-time interface and coin-slot integration. This guide covers logging into the LPB user portal, finding and using pause time, reaching the admin side, and resolving the issues LPB users report most often.</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#lpb-overview">What is the LPB vendo system?</a></li>
+          <li><a href="#lpb-user">Logging into the LPB user portal</a></li>
+          <li><a href="#lpb-pause">Using pause time on LPB</a></li>
+          <li><a href="#lpb-admin">Accessing the LPB admin dashboard</a></li>
+          <li><a href="#lpb-settings">Key admin settings explained</a></li>
+          <li><a href="#lpb-troubleshoot">Troubleshooting LPB-specific issues</a></li>
+          <li><a href="#lpb-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="lpb-overview">What is the LPB vendo system?</h2>
+      <p>LPB refers to a particular Piso WiFi vendo firmware/software combination that many small operators install on a Raspberry Pi or mini PC connected to a router and a coin acceptor or bill validator. It provides a customer-facing captive portal (where users pay and manage sessions) and a separate password-protected admin dashboard (where the machine owner manages pricing, network settings, and reports). The customer-facing side is reached at <span class="ip">10.0.0.1</span> once connected to the machine's WiFi.</p>
+      <p>Compared to some older vendo scripts, LPB is popular because its pause time button is prominent on the main screen rather than buried in a menu, and because it tends to log session history in a way that's easy for owners to review at the end of the day.</p>
+
+      <h2 id="lpb-user">Logging into the LPB user portal</h2>
+      <ol class="steps">
+        <li><strong>Join the vendo WiFi network</strong>Look for the network name posted on or near the coin machine.</li>
+        <li><strong>Open 10.0.0.1 in your browser</strong>Type it directly into the address bar; the LPB portal should appear automatically as a captive portal.</li>
+        <li><strong>Insert coins or select a rate</strong>Follow the on-screen prompts — LPB typically shows a rate table (e.g., ₱5 for 30 minutes, ₱10 for 1 hour) before you insert payment.</li>
+        <li><strong>Wait for the timer to start</strong>Once payment registers, your countdown timer appears at the top of the portal along with the pause button.</li>
+      </ol>
+
+      <div class="callout">
+        <p><strong>Tip:</strong> LPB portals usually remember your device for a short window even after you close the browser tab. If you reopen 10.0.0.1 while still in range and your session hasn't expired, you'll be dropped straight back into your active timer without needing to pay again.</p>
+      </div>
+
+      <h2 id="lpb-pause">Using pause time on LPB</h2>
+      <p>On the LPB interface, the pause control sits directly beneath the countdown clock as a labeled button. Tapping it locks in your remaining balance and shows a "Paused" badge. To resume, reopen the same portal from the same device and tap the button again, which now reads "Resume."</p>
+      <table>
+        <tr><th>Action</th><th>Where to find it</th><th>Result</th></tr>
+        <tr><td>Pause</td><td>Below the countdown timer</td><td>Freezes remaining minutes, badge changes to "Paused"</td></tr>
+        <tr><td>Resume</td><td>Same button, relabeled</td><td>Timer resumes counting down from where it stopped</td></tr>
+        <tr><td>Disconnect</td><td>Device WiFi settings</td><td>Session stays paused if pause was tapped first</td></tr>
+        <tr><td>Buy more time</td><td>"Add time" or coin icon</td><td>Adds to current or paused balance</td></tr>
+      </table>
+
+      <h2 id="lpb-admin">Accessing the LPB admin dashboard</h2>
+      <p>The admin dashboard is a separate, password-protected area meant only for the machine owner or operator — not for regular WiFi customers. It is normally reached through a distinct path or port from the same base address, such as an <code>/admin</code> route, and is protected by a username and password set during installation.</p>
+      <ol class="steps">
+        <li><strong>Connect to the same local network</strong>Admin access generally still requires being on the vendo's own network or a direct connection to its management interface.</li>
+        <li><strong>Navigate to the admin path</strong>This is usually appended after the base address, for example <code>10.0.0.1/admin</code>. The exact path can differ by installation.</li>
+        <li><strong>Enter your admin credentials</strong>Use the username and password configured when the machine was set up. If you never changed them, check the installer's documentation or the reseller who configured your unit — default credentials are never something a public guide should publish, since publishing them would only help someone break into a machine that isn't theirs.</li>
+        <li><strong>Reset forgotten credentials safely</strong>If you're the legitimate owner and have lost your password, most LPB installations support a credential reset via direct access to the underlying device (Raspberry Pi/mini PC) rather than through the web portal, for security reasons.</li>
+      </ol>
+
+      <h2 id="lpb-settings">Key admin settings explained</h2>
+      <div class="grid-2">
+        <div class="card"><h4>Rate table</h4><p>Set how many minutes or hours each coin denomination buys. Most owners tier this so bulk payments (₱20, ₱50) are proportionally better value than single coins.</p></div>
+        <div class="card"><h4>Pause window</h4><p>Controls how long a paused session is preserved before it's automatically cleared, often configurable from a few hours up to several days.</p></div>
+        <div class="card"><h4>Bandwidth limits</h4><p>Caps the speed or data volume per connected device so one user can't monopolize the shared connection.</p></div>
+        <div class="card"><h4>Session logs</h4><p>A running record of connections, payments, and pause events, useful for reconciling coin totals against reported usage.</p></div>
+      </div>
+
+      <h2 id="lpb-troubleshoot">Troubleshooting LPB-specific issues</h2>
+      <details class="faq"><summary>Coins register but the timer never starts</summary><div class="faq-body"><p>This is typically a coin-acceptor pulse miscount rather than a software fault — check the physical coin mechanism's wiring and pulse setting in the admin panel matches the coin denomination in use.</p></div></details>
+      <details class="faq"><summary>Portal loads but shows a blank white screen</summary><div class="faq-body"><p>Often caused by a browser caching an old version of the portal page. Clear the browser cache for that site or try a private/incognito window.</p></div></details>
+      <details class="faq"><summary>Admin dashboard won't accept the correct password</summary><div class="faq-body"><p>Confirm caps lock is off and that you're on the exact admin path used during setup — some installs are case-sensitive on both username and route.</p></div></details>
+      <details class="faq"><summary>Multiple devices show as connected but only one paid</summary><div class="faq-body"><p>Check whether "free trial minutes" or a guest-access setting is enabled in the admin panel; some LPB configurations grant a small free window before payment is required.</p></div></details>
+
+      <h2 id="lpb-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>Is LPB the same as every Piso WiFi machine?</summary><div class="faq-body"><p>No — LPB is one specific vendo software package among several in circulation. The general pause-time concept is shared across most of them, but menu layout, admin paths, and default settings differ by build.</p></div></details>
+      <details class="faq"><summary>Can I install LPB myself?</summary><div class="faq-body"><p>Installation is typically handled by resellers or hobbyists who set up the Raspberry Pi/mini PC hardware and coin mechanism together; it's a hardware-plus-software project rather than an app you install on an existing router.</p></div></details>
+
+      <footer class="page-foot">See also: <a href="#pause-time" onclick="goPage('pause-time');return false;">general Piso WiFi pause time guide</a> and <a href="#admin-10001" onclick="goPage('admin-10001');return false;">10.0.0.1 admin login reference</a>.</footer>
+    </article>
+
+    <!-- PAGE 3 -->
+    <article class="page" id="page-admin-254">
+      <span class="kicker">192.168.1.254</span>
+      <h1>192.168.1.254 – 192.168.l.254 Admin Login</h1>
+      <p class="lede"><span class="ip">192.168.1.254</span> is a private IP address commonly assigned as the default gateway on many home and small-office routers, and on some Piso WiFi vendo setups that use it instead of 10.0.0.1. This page explains how to reach it, log in, and what to do if the address doesn't load — including the very common typo <a href="https://pisowifipausetime.ph/192-168-1-254/">192.168.1.254</a> (a lowercase "L" mistaken for a "1").</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#a254-why">Why 192.168.1.254 and not 192.168.1.1?</a></li>
+          <li><a href="#a254-typo">The "192.168.l.254" typo, explained</a></li>
+          <li><a href="#a254-login">Step-by-step login</a></li>
+          <li><a href="#a254-find">Finding your actual gateway address</a></li>
+          <li><a href="#a254-cant">What to do if the page won't load</a></li>
+          <li><a href="#a254-security">Basic security once you're in</a></li>
+          <li><a href="#a254-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="a254-why">Why 192.168.1.254 and not 192.168.1.1?</h2>
+      <p>Both addresses are common defaults, but different manufacturers pick different conventions. Some brands place the router/gateway at the "low" end of the subnet (<span class="ip">192.168.1.1</span>), while others — including many ISP-supplied modems and several Piso WiFi vendo configurations — place it near the "high" end at <span class="ip">192.168.1.254</span>, reserving that address as the last usable host on a standard /24 subnet. Neither is more "correct"; it simply depends on how the device was configured out of the box.</p>
+
+      <h2 id="a254-typo">The "192.168.l.254" typo, explained</h2>
+      <p>A huge number of people searching for this address accidentally type a lowercase letter L in place of the number 1, because on many fonts and keyboards they look almost identical — "192.168.l.254" instead of "192.168.1.254". Browsers treat these as completely different, invalid addresses, and the page will fail to load with a "can't reach this page" or "server not found" error. If your login attempt fails instantly with no login screen at all, this typo is the single most common cause — double-check that every character is the number one, not a letter.</p>
+
+      <div class="callout warn">
+        <p><strong>Quick check:</strong> Numeral 1 usually has a small flat serif or hook at the top and a flat base in most browser address-bar fonts; the letter L is a plain vertical stroke. When in doubt, delete the address and retype it manually rather than trusting autocomplete or a copy-pasted link from an untrusted source.</p>
+      </div>
+
+      <h2 id="a254-login">Step-by-step login</h2>
+      <ol class="steps">
+        <li><strong>Connect to the right network</strong>Join the WiFi network (or plug in via Ethernet) for the specific router or vendo box you're trying to configure.</li>
+        <li><strong>Open a browser and type the address exactly</strong>Enter <span class="ip">192.168.1.254</span> into the address bar, not a search engine.</li>
+        <li><strong>Wait for the login prompt</strong>You should see a username/password prompt, either a browser popup or a styled login page depending on the device.</li>
+        <li><strong>Enter your credentials</strong>Use the credentials specific to your device — often printed on a sticker on the router itself, or provided by whoever installed the vendo machine.</li>
+        <li><strong>Land on the dashboard</strong>A successful login brings you to a settings dashboard where network, pricing, or WiFi options are configured depending on the device type.</li>
+      </ol>
+
+      <h2 id="a254-find">Finding your actual gateway address</h2>
+      <p>If you're not certain your device even uses <span class="ip">192.168.1.254</span>, you can confirm the real gateway address directly from your computer or phone rather than guessing.</p>
+      <table>
+        <tr><th>Device</th><th>How to check</th></tr>
+        <tr><td>Windows</td><td>Open Command Prompt, run <code>ipconfig</code>, look for "Default Gateway"</td></tr>
+        <tr><td>macOS</td><td>System Settings → Network → Wi-Fi → Details → TCP/IP tab</td></tr>
+        <tr><td>Android</td><td>Settings → WiFi → tap the connected network → Advanced/Gateway</td></tr>
+        <tr><td>iPhone</td><td>Settings → Wi-Fi → tap the (i) next to the network → Router field</td></tr>
+      </table>
+
+      <h2 id="a254-cant">What to do if the page won't load</h2>
+      <div class="grid-2">
+        <div class="card"><h4>Wrong network</h4><p>Confirm you're connected to the specific router or vendo network in question, not a different WiFi network or mobile data.</p></div>
+        <div class="card"><h4>HTTPS redirect issues</h4><p>Some browsers force https:// automatically. Try explicitly typing <code>http://192.168.1.254</code> with the http prefix.</p></div>
+        <div class="card"><h4>Address is actually different</h4><p>Use the gateway-check steps above; some devices ship on 192.168.0.1, 192.168.1.1, or 10.0.0.1 instead.</p></div>
+        <div class="card"><h4>Browser cache conflicts</h4><p>Clear cached data for that address or try a private/incognito window, especially if you've logged into a different router at the same address before.</p></div>
+      </div>
+
+      <h2 id="a254-security">Basic security once you're in</h2>
+      <p>Once logged into any admin dashboard at a private address like this one, treat it the same as any other sensitive account. Change any default username and password to something unique, avoid reusing a password from another account, and log out of the dashboard when finished rather than leaving the session open on a shared device.</p>
+
+      <h2 id="a254-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>Is 192.168.1.254 a public website?</summary><div class="faq-body"><p>No. It's a private, local network address that only resolves to something when you're connected to the specific router or vendo device using it — it means something different on every network.</p></div></details>
+      <details class="faq"><summary>Why does my browser say "not secure"?</summary><div class="faq-body"><p>Local admin panels usually run over plain HTTP rather than HTTPS since they're only reachable on a private local network, so browsers flag them as not secure. This is expected behavior for this kind of local device login, not a sign of a public data breach.</p></div></details>
+      <details class="faq"><summary>I typed it correctly but still see an error page</summary><div class="faq-body"><p>Try restarting the router or vendo device, waiting a minute for it to fully boot, then reconnecting your device to its network before trying the address again.</p></div></details>
+
+      <footer class="page-foot">If your device actually uses a different address, see <a href="#admin-1111" onclick="goPage('admin-1111');return false;">10.1.1.1 Admin Login</a> or <a href="#admin-10001" onclick="goPage('admin-10001');return false;">10.0.0.1 Admin Login</a>.</footer>
+    </article>
+
+    <!-- PAGE 4 -->
+    <article class="page" id="page-pause-10-5-50-1">
+      <span class="kicker">10.5.50.1</span>
+      <h1>10.5.50.1 Pause Time Login – Complete Piso WiFi Guide</h1>
+      <p class="lede">A smaller number of <a href="https://pisowifipausetime.ph/10-5-50-1/">10.5.50.1 login page</a> vendo installations use <span class="ip">10.5.50.1</span> as their portal address instead of the more common 10.0.0.1. The pause time feature, login flow, and troubleshooting steps are largely the same in concept — only the address changes. This page walks through the full process for machines configured on this address.</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#p550-why">Why some machines use 10.5.50.1</a></li>
+          <li><a href="#p550-login">Logging in and starting a session</a></li>
+          <li><a href="#p550-pause">Pausing and resuming</a></li>
+          <li><a href="#p550-balance">Checking your balance</a></li>
+          <li><a href="#p550-troubleshoot">Troubleshooting</a></li>
+          <li><a href="#p550-owner">For machine owners</a></li>
+          <li><a href="#p550-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="p550-why">Why some machines use 10.5.50.1</h2>
+      <p>The 10.x.x.x range is a large block of private address space, and different vendo software authors or system integrators pick different sub-ranges within it to avoid clashing with a customer's existing home or office network when the vendo box is plugged into an existing router rather than acting as its own standalone access point. <span class="ip">10.5.50.1</span> shows up most often on custom-built or regionally distributed vendo software rather than the more mainstream builds that default to 10.0.0.1.</p>
+
+      <h2 id="p550-login">Logging in and starting a session</h2>
+      <ol class="steps">
+        <li><strong>Connect to the vendo WiFi</strong>Join the network exactly as posted on the machine's signage.</li>
+        <li><strong>Open your browser</strong>Type <span class="ip">10.5.50.1</span> directly into the address bar.</li>
+        <li><strong>Wait for the captive portal</strong>Give it a few seconds — some installations on this address range are slightly slower to redirect than mainstream builds.</li>
+        <li><strong>Choose a rate and pay</strong>Insert coins or use the linked payment method shown on screen.</li>
+        <li><strong>Confirm your timer started</strong>The countdown should appear immediately after payment registers.</li>
+      </ol>
+
+      <h2 id="p550-pause">Pausing and resuming</h2>
+      <p>Look for the pause control near the countdown display — on this address range it's sometimes represented as an icon rather than a text button, so look for a "⏸" symbol if you don't see the word "Pause" written out. Tapping it freezes your balance exactly as described for other Piso WiFi builds; tapping the same control again (now often shown as "▶") resumes the countdown.</p>
+
+      <div class="callout">
+        <p><strong>Tip:</strong> Screenshot your remaining time right after pausing. A small number of 10.5.50.1 builds don't clearly redisplay the exact frozen balance until you resume, so having your own record avoids any confusion with the machine owner later.</p>
+      </div>
+
+      <h2 id="p550-balance">Checking your balance</h2>
+      <p>While connected, revisiting <span class="ip">10.5.50.1</span> in your browser should show your current status without requiring you to pay again, as long as your session or pause window hasn't expired. If the page instead shows the initial rate-selection screen, your session has likely already ended.</p>
+
+      <table>
+        <tr><th>What you see</th><th>Meaning</th></tr>
+        <tr><td>Countdown actively ticking</td><td>Active session, minutes being used</td></tr>
+        <tr><td>Frozen number with a pause icon</td><td>Session successfully paused</td></tr>
+        <tr><td>Rate/price selection screen</td><td>No active or paused session found for your device</td></tr>
+        <tr><td>Connection timed out</td><td>Not connected to the vendo network, or machine is powered off</td></tr>
+      </table>
+
+      <h2 id="p550-troubleshoot">Troubleshooting</h2>
+      <details class="faq"><summary>Portal never appears after connecting to WiFi</summary><div class="faq-body"><p>Manually type the full address including http:// into your browser rather than waiting for an automatic captive-portal popup, since not every phone or laptop triggers that popup reliably on every network.</p></div></details>
+      <details class="faq"><summary>Pause button is greyed out</summary><div class="faq-body"><p>Some configurations disable pausing during the first few minutes of a session to discourage pause abuse; wait a short while and try again.</p></div></details>
+      <details class="faq"><summary>Balance appears to shrink even while paused</summary><div class="faq-body"><p>Double-check the display isn't simply showing a data-cap counter rather than the time counter — on some builds these are shown separately and only one of the two actually freezes.</p></div></details>
+
+      <h2 id="p550-owner">For machine owners</h2>
+      <p>If you operate a vendo machine on this address range, the admin side is typically reached through a separate authenticated route rather than the public pause-time page, similar in concept to other vendo builds. Keep your admin credentials different from the default shipped configuration, and periodically export your session logs so you have a backup of your rate history and usage patterns independent of the device itself.</p>
+
+      <h2 id="p550-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>Is 10.5.50.1 safe to use?</summary><div class="faq-body"><p>Like any local vendo address, it's only ever reachable from devices connected to that specific machine's network, so the safety considerations are the same as any other Piso WiFi setup — avoid entering unrelated personal accounts or payment details beyond what the portal itself requests for topping up time.</p></div></details>
+      <details class="faq"><summary>Can I change my machine to use a different address?</summary><div class="faq-body"><p>This is possible on most vendo software through the admin network settings, but changing it will require reconnecting your own devices to whatever new address you configure, and should only be done by whoever manages the installation.</p></div></details>
+
+      <footer class="page-foot">Related: <a href="#pause-time" onclick="goPage('pause-time');return false;">10.0.0.1 pause time guide</a> &middot; <a href="#lpb-guide" onclick="goPage('lpb-guide');return false;">LPB admin guide</a>.</footer>
+    </article>
+
+    <!-- PAGE 5 -->
+    <article class="page" id="page-admin-1111">
+      <span class="kicker">10.1.1.1</span>
+      <h1>10.1.1.1 – 10.1.1.1.0/admin Login</h1>
+      <p class="lede"><a href="https://pisowifipausetime.ph/10-1-1-1-0/">10.1.1.1</a> is another private gateway address used by some routers and Piso WiFi vendo machines, sometimes paired with an admin path that gets mistyped as "10.1.1.1.0/admin" (an extra ".0" that doesn't belong in a standard IPv4 address). This guide clears up the correct format and walks through logging in.</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#a111-format">Getting the address format right</a></li>
+          <li><a href="#a111-login">Logging in step by step</a></li>
+          <li><a href="#a111-admin">Reaching the admin panel</a></li>
+          <li><a href="#a111-settings">What you can configure</a></li>
+          <li><a href="#a111-issues">Common access issues</a></li>
+          <li><a href="#a111-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="a111-format">Getting the address format right</h2>
+      <p>A standard IPv4 address always has exactly four numbers separated by three dots, each between 0 and 255 — for example <span class="ip">10.1.1.1</span>. A search like "10.1.1.1.0/admin" adds an extra segment that makes it technically invalid as a plain address; what's usually meant is the base address <span class="ip">10.1.1.1</span> followed by a path, such as <code>10.1.1.1/admin</code> (no extra zero, one slash before the word "admin"). Typing the invalid five-segment version into a browser will simply fail to resolve.</p>
+
+      <div class="callout">
+        <p><strong>Correct format:</strong> <code>http://10.1.1.1/admin</code> — four numbers, three dots, then a single forward slash before any page path.</p>
+      </div>
+
+      <h2 id="a111-login">Logging in step by step</h2>
+      <ol class="steps">
+        <li><strong>Connect to the correct network</strong>Join the WiFi network or plug in via Ethernet to the specific device using this address.</li>
+        <li><strong>Type the base address first</strong>Enter <span class="ip">10.1.1.1</span> alone into your browser to confirm the device responds at all.</li>
+        <li><strong>Proceed to the admin path if prompted</strong>If the base address shows a general status page rather than a login form, try appending <code>/admin</code> to reach the configuration login.</li>
+        <li><strong>Enter your credentials</strong>Use the username and password specific to your device or vendo installation.</li>
+        <li><strong>Confirm dashboard access</strong>A successful login should present network, pricing, or device settings depending on what kind of hardware you're logging into.</li>
+      </ol>
+
+      <h2 id="a111-admin">Reaching the admin panel</h2>
+      <p>On devices that use this address, the admin panel is generally kept separate from any customer-facing pause-time or payment portal, precisely so that regular WiFi users browsing the network can't stumble into configuration settings by accident. If you're a regular customer just trying to use paid WiFi rather than configure the device, you likely don't need the admin path at all — look instead for whatever landing page appeared automatically when you first connected.</p>
+
+      <h2 id="a111-settings">What you can configure</h2>
+      <table>
+        <tr><th>Setting area</th><th>What it controls</th></tr>
+        <tr><td>Network name (SSID)</td><td>The WiFi name broadcast to nearby devices</td></tr>
+        <tr><td>Access credentials</td><td>Username/password required to reach the admin panel itself</td></tr>
+        <tr><td>Connected devices</td><td>A live list of everything currently joined to the network</td></tr>
+        <tr><td>Rate or bandwidth rules</td><td>On vendo-style devices, pricing and speed limits per session</td></tr>
+      </table>
+
+      <h2 id="a111-issues">Common access issues</h2>
+      <div class="grid-2">
+        <div class="card"><h4>Extra characters in the URL</h4><p>Remove any stray digits, extra dots, or spaces — retype the address manually rather than trusting a link you found elsewhere.</p></div>
+        <div class="card"><h4>Wrong device on the network</h4><p>If multiple routers or vendo boxes exist on the same premises, confirm you're connected to the one actually assigned this address.</p></div>
+        <div class="card"><h4>Session timeout</h4><p>Admin panels often log you out automatically after a period of inactivity as a security measure — simply log back in.</p></div>
+        <div class="card"><h4>Browser autofill interference</h4><p>Disable address-bar autocomplete temporarily if it keeps rewriting the address as you type it.</p></div>
+      </div>
+
+      <h2 id="a111-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>What does the "/admin" part actually do?</summary><div class="faq-body"><p>It points your browser to a specific configuration page on the device rather than its default landing page — think of it as a folder path on the device's small built-in web server.</p></div></details>
+      <details class="faq"><summary>Do I need admin access as a regular WiFi user?</summary><div class="faq-body"><p>No. Regular users only need whatever portal appears automatically after connecting; the admin path is meant for whoever owns or manages the device.</p></div></details>
+      <details class="faq"><summary>The page loads but looks broken or unstyled</summary><div class="faq-body"><p>Try a hard refresh (Ctrl+Shift+R or Cmd+Shift+R) to clear any partially cached page assets, or switch to a different browser temporarily.</p></div></details>
+
+      <footer class="page-foot">Also see: <a href="#admin-254" onclick="goPage('admin-254');return false;">192.168.1.254 Admin Login</a> &middot; <a href="#admin-10001" onclick="goPage('admin-10001');return false;">10.0.0.1 Admin Login</a>.</footer>
+    </article>
+
+    <!-- PAGE 6 -->
+    <article class="page" id="page-admin-10001">
+      <span class="kicker">10.0.0.1</span>
+      <h1>10.0.0.1 – 10.0.0.0.1 Admin Login</h1>
+      <p class="lede"><a href="https://pisowifipausetime.ph/10-0-0-1/">10.0.0.1</a> This page is specifically for Piso WiFi vendo owners and administrators who need to log into the management side of a machine running on <span class="ip">10.0.0.1</span>, as opposed to the customer-facing pause-time portal covered elsewhere on this site. It also clears up the invalid "10.0.0.0.1" variant that sometimes appears in search results.</p>
+
+      <div class="toc">
+        <p>On this page</p>
+        <ol>
+          <li><a href="#a1001-vs">Admin login vs. customer portal</a></li>
+          <li><a href="#a1001-typo">About the "10.0.0.0.1" typo</a></li>
+          <li><a href="#a1001-login">Admin login steps</a></li>
+          <li><a href="#a1001-lockout">If you're locked out</a></li>
+          <li><a href="#a1001-manage">Day-to-day management tasks</a></li>
+          <li><a href="#a1001-security">Keeping the admin panel secure</a></li>
+          <li><a href="#a1001-faq">Frequently asked questions</a></li>
+        </ol>
+      </div>
+
+      <h2 id="a1001-vs">Admin login vs. customer portal</h2>
+      <p>The same base address, <span class="ip">10.0.0.1</span>, often serves two different experiences depending on the path you visit and whether you're already authenticated as the owner. Regular customers land on the pause-time and payment portal automatically. Owners and administrators instead need a distinct login path — commonly something like <code>10.0.0.1/admin</code> — protected by credentials that are separate from anything a paying customer ever sees.</p>
+
+      <div class="callout">
+        <p><strong>Not the same thing:</strong> If you're only trying to pause or check your paid WiFi time as a customer, you want the main portal, not the admin login. See the <a href="#pause-time" onclick="goPage('pause-time');return false;">pause time guide</a> instead.</p>
+      </div>
+
+      <h2 id="a1001-typo">About the "10.0.0.0.1" typo</h2>
+      <p>"10.0.0.0.1" has five number segments, which isn't a valid IPv4 address — real IPv4 addresses always have exactly four segments separated by three dots. This typo most often comes from someone accidentally typing an extra "0." while trying to write <span class="ip">10.0.0.1</span> quickly, or from a search engine autosuggestion getting garbled. If a page you're on shows this exact string, correct it to the four-segment version before trying again.</p>
+
+      <h2 id="a1001-login">Admin login steps</h2>
+      <ol class="steps">
+        <li><strong>Connect to the machine's own network</strong>Admin access is generally still restricted to devices physically or wirelessly connected to the vendo machine's local network, not reachable from the open internet.</li>
+        <li><strong>Navigate to the admin path</strong>Enter the specific admin URL set up during installation, such as <code>10.0.0.1/admin</code>.</li>
+        <li><strong>Enter owner credentials</strong>Use the administrator username and password configured for your specific installation.</li>
+        <li><strong>Review the dashboard</strong>Once logged in you should see session history, rate settings, and network configuration options.</li>
+        <li><strong>Log out when finished</strong>Especially important if the management device is shared or located somewhere customers can physically access it.</li>
+      </ol>
+
+      <h2 id="a1001-lockout">If you're locked out</h2>
+      <p>Losing admin access to a machine you legitimately own is frustrating but recoverable in most cases. Because publishing generic default usernames and passwords publicly would primarily help someone access a machine that isn't theirs, this guide intentionally doesn't list them. Instead, legitimate owners locked out of their own hardware typically have these options:</p>
+      <ul>
+        <li>Check any setup documentation, sticker, or install notes left by whoever configured the machine originally.</li>
+        <li>Contact the reseller, installer, or vendo software provider directly — most keep records tied to the specific unit's serial number.</li>
+        <li>If you have physical and direct access to the underlying hardware (Raspberry Pi or mini PC), a local factory-reset procedure is usually available through the device itself rather than the web interface.</li>
+      </ul>
+
+      <h2 id="a1001-manage">Day-to-day management tasks</h2>
+      <table>
+        <tr><th>Task</th><th>Where it typically lives in the dashboard</th></tr>
+        <tr><td>Adjust rates/pricing</td><td>Rate table or pricing settings</td></tr>
+        <tr><td>Review daily earnings</td><td>Reports or transaction log</td></tr>
+        <tr><td>Set pause time limits</td><td>Session or pause settings</td></tr>
+        <tr><td>Blacklist a problem device</td><td>Connected devices / access control</td></tr>
+        <tr><td>Update WiFi network name</td><td>Network / SSID settings</td></tr>
+      </table>
+
+      <h2 id="a1001-security">Keeping the admin panel secure</h2>
+      <p>Since anyone briefly connected to the customer WiFi network is technically on the same local network as the admin panel, it's worth treating admin credentials with real care rather than leaving factory defaults in place. Change the default password immediately after setup, use a password not reused anywhere else, and if your vendo software supports it, restrict the admin path to a separate management network or VLAN rather than the open customer WiFi.</p>
+
+      <h2 id="a1001-faq">Frequently asked questions</h2>
+      <details class="faq"><summary>Can customers accidentally reach the admin panel?</summary><div class="faq-body"><p>Only if they know or guess the specific admin path and have valid credentials — simply connecting to the WiFi and visiting the base address routes regular users to the customer portal, not the admin login.</p></div></details>
+      <details class="faq"><summary>Is 10.0.0.1 the same on every vendo machine?</summary><div class="faq-body"><p>The address itself is common, but the software running behind it, the admin path, and the exact features available differ by vendo build — always refer to your specific installation's documentation where possible.</p></div></details>
+      <details class="faq"><summary>Can I access the admin panel remotely from outside the WiFi range?</summary><div class="faq-body"><p>Not by default, since 10.0.0.1 is a private address only meaningful on that machine's own local network — remote access would require additional configuration such as a VPN back into that network, set up deliberately by the owner.</p></div></details>
+
+      <footer class="page-foot">Customer-side pause time steps live on the <a href="#pause-time" onclick="goPage('pause-time');return false;">10.0.0.1 pause time page</a>.</footer>
+    </article>
+
+    <!-- PAGE 7: CONTACT -->
+    <article class="page" id="page-contact">
+      <span class="kicker">Contact</span>
+      <h1>Contact Us</h1>
+      <p>Have a correction, a question about a specific vendo build, or feedback on one of these guides? We'd like to hear it. Please feel free to reach out through our <a href="https://pisowifipausetime.ph/contact-us/">Contact Us</a> page. This site is maintained as an independent, ad-free reference — not by any router or vendo hardware manufacturer.</p>
+
+      <h2>Get in touch</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>General questions</h4>
+          <p>For questions about pause time, login steps, or anything covered in these guides, describe the exact address, error message, and device type you're seeing for the fastest help.</p>
+        </div>
+        <div class="card">
+          <h4>Corrections &amp; updates</h4>
+          <p>Vendo software changes frequently. If a step on this site is outdated for your specific build, let us know which page and what you observed instead.</p>
+        </div>
+      </div>
+
+      <h2>What we can't help with</h2>
+      <ul>
+        <li>Recovering admin access to a machine you don't own or operate.</li>
+        <li>Bypassing payment or pause-time limits on someone else's vendo machine.</li>
+        <li>Technical support for hardware brands or vendo software we don't cover on this site.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>Response times:</strong> As an independent guide site, replies are handled on a best-effort basis. Please include as much detail as possible in your first message so we can help efficiently.</p>
+      </div>
+
+      <h2>Send a message</h2>
+      <form onsubmit="event.preventDefault(); document.getElementById('contact-confirm').style.display='block'; this.reset();">
+        <div style="max-width:74ch;display:flex;flex-direction:column;gap:14px;margin-top:14px;">
+          <label style="font-size:0.88rem;font-weight:600;color:var(--navy-900);">Name
+            <input required type="text" style="width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.95rem;">
+          </label>
+          <label style="font-size:0.88rem;font-weight:600;color:var(--navy-900);">Email
+            <input required type="email" style="width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.95rem;">
+          </label>
+          <label style="font-size:0.88rem;font-weight:600;color:var(--navy-900);">Which page is this about?
+            <select style="width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.95rem;">
+              <option>Pause Time (10.0.0.1)</option>
+              <option>LPB Guide (10.0.0.1)</option>
+              <option>192.168.1.254 Admin</option>
+              <option>10.5.50.1 Pause Time</option>
+              <option>10.1.1.1 Admin</option>
+              <option>10.0.0.1 Admin</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label style="font-size:0.88rem;font-weight:600;color:var(--navy-900);">Message
+            <textarea required rows="5" style="width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.95rem;resize:vertical;"></textarea>
+          </label>
+          <button type="submit" style="align-self:flex-start;background:var(--navy-900);color:#fff;border:none;padding:11px 22px;border-radius:6px;font-family:var(--head);font-weight:600;cursor:pointer;font-size:0.92rem;">Send message</button>
+        </div>
+      </form>
+      <p id="contact-confirm" style="display:none;color:var(--accent-dark);font-weight:600;margin-top:14px;">Thanks — this demo form doesn't send data anywhere yet, but the layout is ready to wire up to your own backend or form service.</p>
+
+      <footer class="page-foot">Prefer to browse instead? Head back to the <a href="#pause-time" onclick="goPage('pause-time');return false;">pause time guide</a>.</footer>
+    </article>
+
+    <!-- PAGE 8: ABOUT -->
+    <article class="page" id="page-about">
+      <span class="kicker">About</span>
+      <h1>About This Site</h1>
+      ```html
+<p>Piso WiFi Help Desk is an independent reference site built for one purpose: helping people quickly find and use the pause-time and admin-login features on the private IP addresses that coin-operated Piso WiFi vendo machines commonly use. Learn more about our mission and the information we provide on our <a href="https://pisowifipausetime.ph/about-us/">About Us</a> page.</p>
+```
+
+
+      <h2>Why this site exists</h2>
+      <p>Searching for a bare IP address like <span class="ip">10.0.0.1</span> or <span class="ip">192.168.1.254</span> usually returns a mess of outdated forum posts, conflicting instructions, and pages that don't distinguish between logging in as a paying customer versus logging in as the machine's owner. This site tries to separate those two audiences clearly, keep instructions general enough to apply across different vendo builds, and flag the common typos (like a stray letter L instead of the number 1) that quietly break people's login attempts.</p>
+
+      <h2>What we cover</h2>
+      <ul>
+        <li>Pausing, checking, and resuming a paid Piso WiFi session.</li>
+        <li>Logging into common admin/gateway addresses used by vendo machines and small routers.</li>
+        <li>Distinguishing customer-facing portals from owner-only admin dashboards.</li>
+        <li>Practical troubleshooting for the login and connectivity issues people report most.</li>
+      </ul>
+
+      <h2>What this site is not</h2>
+      <div class="callout warn">
+        <p>This is not an official resource from any router manufacturer or Piso WiFi vendo software developer, and it does not publish default admin credentials for any device. Exact menus, button placement, and default settings vary by manufacturer and by the specific vendo build installed on a given machine — always confirm details against your own device where it matters.</p>
+      </div>
+
+      <h2>Our approach to accuracy</h2>
+      <p>Private network addresses and vendo software both change over time, and no single guide can perfectly describe every build in circulation. Where behavior varies by device or software version, we say so explicitly rather than presenting one version as universal. If you notice a page that no longer matches what you see on your own machine, the <a href="#contact" onclick="goPage('contact');return false;">contact page</a> is the place to flag it.</p>
+
+      <h2>A note on privacy</h2>
+      <p>This site doesn't require an account, doesn't track individual visitors for advertising purposes, and doesn't ask for anything beyond what's needed to respond to a message sent through the contact form.</p>
+
+      <footer class="page-foot">Ready to get back to a guide? Start at <a href="#pause-time" onclick="goPage('pause-time');return false;">Piso WiFi Pause Time</a>.</footer>
+    </article>
+
+  </main>
+</div>
+
+<script>
+  const pages = ['pause-time','lpb-guide','admin-254','pause-10-5-50-1','admin-1111','admin-10001','contact','about'];
+
+  function goPage(id){
+    if(!pages.includes(id)) id = pages[0];
+    pages.forEach(p => {
+      document.getElementById('page-'+p).classList.toggle('active', p === id);
+    });
+    let activeLink = null;
+    document.querySelectorAll('nav.pages a').forEach(a => {
+      const isActive = a.dataset.page === id;
+      a.classList.toggle('active', isActive);
+      if(isActive) activeLink = a;
+    });
+    window.scrollTo({top:0, behavior:'instant'});
+    if(location.hash !== '#'+id){
+      history.replaceState(null, '', '#'+id);
+    }
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
+  document.querySelectorAll('nav.pages a').forEach(a => {
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      goPage(this.dataset.page);
+    });
+  });
+
+  document.getElementById('menuToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  window.addEventListener('hashchange', () => {
+    goPage(location.hash.replace('#',''));
+  });
+
+  // initial load
+  const initial = location.hash.replace('#','');
+  goPage(pages.includes(initial) ? initial : pages[0]);
+</script>
+</body>
+</html>
